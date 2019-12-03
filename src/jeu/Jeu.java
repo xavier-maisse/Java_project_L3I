@@ -4,28 +4,48 @@ public class Jeu {
     private GUI gui; 
 	private Zone zoneCourante;
 	protected Bombe bombe;
+	protected Joueur joueur;
+	private Zone [] zones;
     
     public Jeu() {
         creerCarte();
         gui = null;
         bombe = new Bombe(5,0);
+        joueur = new Joueur("Xavier");
     }
 
     public void setGUI( GUI g) { gui = g; afficherMessageDeBienvenue(); }
     
     private void creerCarte() {
-        Zone [] zones = new Zone [4];
-        zones[0] = new Zone("le couloir", "Couloir.jpg" );
-        zones[1] = new Zone("l'escalier", "centre.jpg" );
-        zones[2] = new Zone("la grande salle", "GrandeSalle.jpg" );
-        zones[3] = new Zone("la salle Ã  manger", "SalleAManger.jpg" );
-        zones[0].ajouteSortie(Sortie.EST, zones[1]);
-        zones[1].ajouteSortie(Sortie.OUEST, zones[0]);
-        zones[1].ajouteSortie(Sortie.EST, zones[2]);
-        zones[2].ajouteSortie(Sortie.OUEST, zones[1]);
-        zones[3].ajouteSortie(Sortie.NORD, zones[1]);
-        zones[1].ajouteSortie(Sortie.SUD, zones[3]);
-        zoneCourante = zones[1]; 
+    	Malfaiteur malfaiteur1 = new Malfaiteur("Jean",
+    			new Enigme("Quand j’avais 6 ans, ma sœur avait la moitié de mon âge. Aujourd’hui j’ai 50 ans, quel âge a ma sœur ? ", "47"));
+        zones = new Zone [5];
+        zones[0] = new Zone("centrale", "centre.jpg");
+        zones[1] = new Zone("sud", "sud.jpg" );
+        zones[2] = new Zone("nord", "nord.jpg",malfaiteur1 );
+        zones[3] = new Zone("est", "est.jpg",malfaiteur1 );
+        zones[4] = new Zone("ouest", "ouest.jpg",malfaiteur1 );
+        
+        //Sortie zone centrale
+        zones[0].ajouteSortie(Sortie.EST, zones[3]);
+        zones[0].ajouteSortie(Sortie.OUEST, zones[4]);
+        zones[0].ajouteSortie(Sortie.NORD, zones[2]);
+        zones[0].ajouteSortie(Sortie.SUD, zones[1]);
+        
+        //Sortie zone sud
+        zones[1].ajouteSortie(Sortie.NORD, zones[0]);
+        
+        //Sortie zone nord
+        zones[2].ajouteSortie(Sortie.SUD, zones[0]);
+        
+        //Sortie zone est
+        zones[3].ajouteSortie(Sortie.OUEST, zones[0]);
+        
+        //Sortie zone ouest
+        zones[4].ajouteSortie(Sortie.EST, zones[0]);
+        
+        
+        zoneCourante = zones[0]; 
     }
     
 
@@ -46,7 +66,8 @@ public class Jeu {
     
     public void traiterCommande(String commandeLue) {
     	gui.afficher( "> "+ commandeLue + "\n");
-        switch (commandeLue.toUpperCase()) {
+    	String[] result = commandeLue.split(" ");
+        switch (result[0].toUpperCase()) {
         case "?" : case "AIDE" : 
             afficherAide(); 
         	break;
@@ -65,12 +86,92 @@ public class Jeu {
         case "P" : case "QUITTER" :
         	terminer();
         	break;
+        case "DEMANDER":
+        	raconteEnigme();
+        	break;
+        case "CREDIT":
+        	credit();
+        	break;
+        case "REPONSE":
+        	if(result.length == 1) gui.afficher("Syntaxe: REPONSE + SOLUTION");
+        	else reponse(result[1]);
+        	break;
+        case "DEFUSE":
+        	if(result.length == 1) gui.afficher("Syntaxe: DEFUSE + SOLUTION");
+        	else defuse(result[1]);
+        	break;
+        case "GONFLER":
+        	gonfler();
+        	break;
        	default : 
             gui.afficher("Commande inconnue");
             break;
         }
     }
 
+    private void gonfler() {
+    	if(zoneCourante == zones[0]) {
+    		if(joueur.getNbrDePieces() < 3) {
+        		gui.afficher("Vous n'avez pas assez de pièces pour activer la machine");
+        		gui.afficher();
+        		gui.afficher("Il te manque " + (3-(joueur.getNbrDePieces())) + " pieces.");
+        	}else {
+        		joueur.setNbrPieces(0);
+        		gui.afficheImage("win.jpg");
+        		zoneCourante.setImage("win.jpg");
+        	}
+    	}else {
+    		gui.afficher("Vous devez être dans la zone principale pour activer la machine");
+    	}
+    	
+    }
+    private void defuse(String str) {
+    	if(zoneCourante == zones[0]) {
+    		if(Integer.parseInt(str) == bombe.getCode()) {
+    			GUI.win();
+    		}else {
+    			GUI.gameOver();
+    		}
+    	}else {
+    		gui.afficher("Vous devez être dans la zone principale pour désamorcer la bombe");
+    	}
+    }
+    
+    private void reponse(String str) {
+    	if(zoneCourante.getMalfaiteur() != null) {
+    		if(zoneCourante.getMalfaiteur().getEnigme().getReponse().equals(str)) {
+        		if(zoneCourante.getMalfaiteur().getEnigme().getIsDone()) {
+        			gui.afficher("Vous avez déjà répondu à cette énigme.");
+        		}else {
+        			gui.afficher("Bravo tu as gagné une pièce !");
+            		zoneCourante.getMalfaiteur().getEnigme().setDone();
+            		joueur.addPiece();
+        		}
+        	}else {
+        		gui.afficher("MAUVAISE REPONSE , téléportation à la zone principale :( ");
+        		Zone nouvelle = zones[0];
+        		zoneCourante = nouvelle;
+        		gui.afficheImage("centre.jpg");
+        	}
+    	}else gui.afficher("Pas d'enigme ici");
+    }
+    
+    private void credit() {
+    	gui.afficher("Nombre de pièces : " +joueur.getNbrDePieces());
+    }
+    
+    private void raconteEnigme() {
+    	if(zoneCourante.getMalfaiteur() != null) {
+    		if(zoneCourante.getMalfaiteur().getEnigme().getIsDone()) {
+    			gui.afficher("Vous avez déjà répondu à cette énigme.");
+    		}else {
+    			gui.afficher(zoneCourante.getMalfaiteur().getEnigme().toString());
+    		}
+    	}else {
+    		gui.afficher("Pas d'enigme dans cette zone !");
+    	}
+    }
+    
     private void afficherAide() {
         gui.afficher("Etes-vous perdu ?");
         gui.afficher();

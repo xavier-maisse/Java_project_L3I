@@ -1,5 +1,7 @@
 package jeu;
 import javax.swing.*;
+import javax.swing.border.Border;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
@@ -40,10 +42,14 @@ public class GUI implements ActionListener
             entree.getCaret().setBlinkRate(0);
     }
 
-    public static void creerGUIGameOver() {
+    public static void creerGUIGame(String str, Color color) {
     	JFrame fenetreOver = new JFrame("You have loose");
     	fenetreOver.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-    	JLabel textLabel = new JLabel("Pas de chance la bombe a explosé !",SwingConstants.CENTER); 
+    	JLabel textLabel = new JLabel(str,SwingConstants.CENTER); 
+    	textLabel.setFont(new java.awt.Font("Times New Roman", 1, 18));
+    	Border border = BorderFactory.createLineBorder(color, 5);
+    	textLabel.setBorder(border);
+    	textLabel.setSize(300, 100);
     	textLabel.setPreferredSize(new Dimension(300, 100)); 
     	fenetreOver.getContentPane().add(textLabel, BorderLayout.CENTER); 
     	fenetreOver.setLocationRelativeTo(null); 
@@ -91,7 +97,15 @@ public class GUI implements ActionListener
      */
     public static void gameOver() {
     	fenetre.setVisible(false);
-    	GUI.creerGUIGameOver();
+    	GUI.creerGUIGame("Pas de chance la bombe a explosé !",Color.RED);
+    	//Si on veut couper l'application
+    	//fenetre.dispatchEvent(new WindowEvent(fenetre,WindowEvent.WINDOW_CLOSING));
+  
+    }
+    
+    public static void win() {
+    	fenetre.setVisible(false);
+    	GUI.creerGUIGame("Bien joué, vous avez gagné !",Color.GREEN);
     	//Si on veut couper l'application
     	//fenetre.dispatchEvent(new WindowEvent(fenetre,WindowEvent.WINDOW_CLOSING));
   

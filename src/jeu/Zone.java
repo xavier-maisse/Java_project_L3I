@@ -6,13 +6,23 @@ public class Zone
     private String description;
     private String nomImage;
     private HashMap<String,Zone> sorties;   
-
-    public Zone(String description, String image) {
+    private Malfaiteur malfaiteur;
+    
+    public Zone(String description, String image, Malfaiteur mal) {
         this.description = description;
+        this.malfaiteur = mal;
         nomImage = image;
         sorties = new HashMap<>();
     }
+    
+    public Zone(String description, String image) {
+        this(description,image,null);
+    }
 
+    public Malfaiteur getMalfaiteur() {
+    	return this.malfaiteur;
+    }
+    
     public void ajouteSortie(Sortie sortie, Zone zoneVoisine) {
         sorties.put(sortie.name(), zoneVoisine);
     }
@@ -35,6 +45,10 @@ public class Zone
 
     public Zone obtientSortie(String direction) {
     	return sorties.get(direction);
+    }
+    
+    public void setImage(String str) {
+    	this.nomImage = str;
     }
 }
 

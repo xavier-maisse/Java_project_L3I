@@ -9,6 +9,7 @@ public class Bombe {
 	private int initSecond;
 	private int initMinute;
 	private Timer timer;
+	private static int code = 196;
 	
 	public Bombe(int minute, int sec) {
 		this.initSecond = sec;
@@ -34,6 +35,10 @@ public class Bombe {
 	public String tempsRestant() {
 		return "Temps restant : "+ this.initMinute + ":" 
 				+ (this.initSecond <= 10 ? "0" : "" ) + this.initSecond+"s";
+	}
+	
+	public int getCode() {
+		return Bombe.code;
 	}
 	
 }
