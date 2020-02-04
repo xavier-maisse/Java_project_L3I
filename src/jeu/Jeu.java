@@ -8,11 +8,11 @@ public class Jeu {
 	private Zone [] zones;
     protected static Commandes config;
     
-    public Jeu() {
+    public Jeu(Joueur joueur) {
         creerCarte();
         gui = null;
         bombe = new Bombe(5,0);
-        joueur = new Joueur("Xavier");
+        this.joueur = joueur;
         config = new Commandes("config.txt");
         System.out.println(config.getMapConfig("NORD"));
     }
@@ -111,12 +111,18 @@ public class Jeu {
         case "GONFLER":
         	gonfler();
         	break;
+        case "NOM":
+        	getNomJoueur();
+        	break;
        	default : 
             gui.afficher("Commande inconnue");
             break;
         }
     }
 
+    private void getNomJoueur() {
+    	gui.afficher(joueur.getNom());
+    }
     private void gonfler() {
     	if(zoneCourante == zones[0]) {
     		if(joueur.getNbrDePieces() < 3) {

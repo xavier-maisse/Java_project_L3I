@@ -20,4 +20,12 @@ public class Personne {
 	public Personne(String nom) {
 		this.nom= nom;
 	}
+	
+	/**
+	 * Retourne le nom 
+	 * @return nom
+	 */
+	public String getNom() {
+		return this.nom;
+	}
 }
