@@ -5,12 +5,22 @@ import java.awt.event.ActionListener;
 
 import javax.swing.Timer;
 
+/**
+ * 
+ * @author xavier
+ * 
+ */
 public class Bombe {
 	private int initSecond;
 	private int initMinute;
 	private Timer timer;
 	private static int code = 196;
 	
+	/**
+	 * Constructeur classe bombe
+	 * @param minute
+	 * @param sec
+	 */
 	public Bombe(int minute, int sec) {
 		this.initSecond = sec;
 		this.initMinute = minute;
@@ -18,6 +28,9 @@ public class Bombe {
 		this.timer.start();
 	}
 	
+	/**
+	 * ActionListener qui permet de décrémenter le compteur
+	 */
 	ActionListener taskPerformer = new ActionListener() {
 		
 		@Override
@@ -32,11 +45,19 @@ public class Bombe {
 		}
 	};
 	
+	/**
+	 * Retourne le temps restant
+	 * @return
+	 */
 	public String tempsRestant() {
 		return "Temps restant : "+ this.initMinute + ":" 
 				+ (this.initSecond <= 10 ? "0" : "" ) + this.initSecond+"s";
 	}
 	
+	/**
+	 * Retourne le code de la bombe
+	 * @return
+	 */
 	public int getCode() {
 		return Bombe.code;
 	}
