@@ -6,7 +6,7 @@ public class Joueur extends Personne{
 	
 	public Joueur(String nom) {
 		super(nom);
-		this.nbrDePieces = 0;
+		this.nbrDePieces = 2;
 	}
 
 	public int getNbrDePieces() {

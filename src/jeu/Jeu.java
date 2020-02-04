@@ -6,25 +6,33 @@ public class Jeu {
 	protected Bombe bombe;
 	protected Joueur joueur;
 	private Zone [] zones;
+    protected static Commandes config;
     
     public Jeu() {
         creerCarte();
         gui = null;
         bombe = new Bombe(5,0);
         joueur = new Joueur("Xavier");
+        config = new Commandes("config.txt");
+        System.out.println(config.getMapConfig("NORD"));
     }
 
     public void setGUI( GUI g) { gui = g; afficherMessageDeBienvenue(); }
     
     private void creerCarte() {
-    	Malfaiteur malfaiteur1 = new Malfaiteur("Jean",
+    	Malfaiteur malfaiteur1 = new Malfaiteur("Xavier",
     			new Enigme("Quand j’avais 6 ans, ma sœur avait la moitié de mon âge. Aujourd’hui j’ai 50 ans, quel âge a ma sœur ? ", "47"));
-        zones = new Zone [5];
+        Malfaiteur malfaiteur2 = new Malfaiteur("Abd",new Enigme("Quel est le plus grand chiffre du monde ?","9"));
+        Malfaiteur malfaiteur3 = new Malfaiteur("Thai",new Enigme("Verticalement : les deuxièmes lettres de chaque mot se suivent avec 2 rangs d’écart. "
+        		+ " \n Horizontalement : les premières lettres de chaque mot se suivent avec 3 rangs d’écart. "
+        		+ "\n Donner la suite des 3 lettres.","PNI"));
+        
+    	zones = new Zone [5];
         zones[0] = new Zone("centrale", "centre.jpg");
         zones[1] = new Zone("sud", "sud.jpg" );
         zones[2] = new Zone("nord", "nord.jpg",malfaiteur1 );
-        zones[3] = new Zone("est", "est.jpg",malfaiteur1 );
-        zones[4] = new Zone("ouest", "ouest.jpg",malfaiteur1 );
+        zones[3] = new Zone("est", "est.jpg",malfaiteur2 );
+        zones[4] = new Zone("ouest", "ouest.jpg",malfaiteur3 );
         
         //Sortie zone centrale
         zones[0].ajouteSortie(Sortie.EST, zones[3]);
@@ -66,13 +74,13 @@ public class Jeu {
     
     public void traiterCommande(String commandeLue) {
     	gui.afficher( "> "+ commandeLue + "\n");
-    	String[] result = commandeLue.split(" ");
+    	String[] result = commandeLue.split(" ");    	
         switch (result[0].toUpperCase()) {
         case "?" : case "AIDE" : 
             afficherAide(); 
         	break;
-        case "Z" : case "NORD" :
-        	allerEn( "NORD"); 
+        case "Z": case "NORD" :
+        	allerEn( "NORD"); 	
         	break;
        case "S" : case "SUD" :
         	allerEn( "SUD"); 

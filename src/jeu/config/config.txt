@@ -1,0 +1,3 @@
+NORD:P
+SUD:S
+OUEST:Q

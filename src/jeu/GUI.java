@@ -2,9 +2,24 @@ package jeu;
 import javax.swing.*;
 import javax.swing.border.Border;
 
+import com.sun.javafx.application.PlatformImpl;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.net.URL;
+
+import javafx.beans.InvalidationListener;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.layout.VBox;
+import javafx.scene.web.WebEngine;
+import javafx.scene.web.WebView;
+import javafx.stage.Stage;
 
 public class GUI implements ActionListener
 {
@@ -12,7 +27,7 @@ public class GUI implements ActionListener
     protected static JFrame fenetre;
     private JTextField entree;
     private JTextArea texte;
-    private JLabel image;
+    private JLabel image; 
 
     public GUI(Jeu j) {
         jeu = j;
@@ -42,20 +57,13 @@ public class GUI implements ActionListener
             entree.getCaret().setBlinkRate(0);
     }
 
-    public static void creerGUIGame(String str, Color color) {
-    	JFrame fenetreOver = new JFrame("You have loose");
-    	fenetreOver.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); 
-    	JLabel textLabel = new JLabel(str,SwingConstants.CENTER); 
-    	textLabel.setFont(new java.awt.Font("Times New Roman", 1, 18));
-    	Border border = BorderFactory.createLineBorder(color, 5);
-    	textLabel.setBorder(border);
-    	textLabel.setSize(300, 100);
-    	textLabel.setPreferredSize(new Dimension(300, 100)); 
-    	fenetreOver.getContentPane().add(textLabel, BorderLayout.CENTER); 
-    	fenetreOver.setLocationRelativeTo(null); 
-    	fenetreOver.pack(); 
-    	fenetreOver.setVisible(true); 
+    public static void creerGUIGame(boolean win) {
+    	SimpleSwingBrowser browser = new SimpleSwingBrowser();
+        browser.setVisible(true);
+        browser.loadURL("https://projetmiagel3i.000webhostapp.com/");
+    	
     }
+   
     
     private void creerGUI() {
         fenetre = new JFrame("Defuse");
@@ -97,7 +105,7 @@ public class GUI implements ActionListener
      */
     public static void gameOver() {
     	fenetre.setVisible(false);
-    	GUI.creerGUIGame("Pas de chance la bombe a explosé !",Color.RED);
+    	GUI.creerGUIGame(false);
     	//Si on veut couper l'application
     	//fenetre.dispatchEvent(new WindowEvent(fenetre,WindowEvent.WINDOW_CLOSING));
   
@@ -105,7 +113,7 @@ public class GUI implements ActionListener
     
     public static void win() {
     	fenetre.setVisible(false);
-    	GUI.creerGUIGame("Bien joué, vous avez gagné !",Color.GREEN);
+    	GUI.creerGUIGame(true);
     	//Si on veut couper l'application
     	//fenetre.dispatchEvent(new WindowEvent(fenetre,WindowEvent.WINDOW_CLOSING));
   
