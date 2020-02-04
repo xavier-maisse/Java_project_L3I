@@ -9,9 +9,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 
-
-
-
 public class Database {
 
 	private String url = "jdbc:mysql://mysql-ivax.alwaysdata.net/ivax_ptut";
@@ -40,23 +37,38 @@ public class Database {
 			
 			st.executeUpdate(query);
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-		
+		}	
 	}
-	public void readDataFromBdd(String joueur, int scrore) {
+	
+	public void updateInBDD(String joueur, int score) {
 		try {
 			st = cn.createStatement();
-			String query = "SELECT * FROM score";
-			ResultSet rs;
-			rs = st.executeQuery(query);
+			String query = "UPDATE score SET score= '"+score+"' WHERE joueur='"+joueur+"'";
 			
-			while(rs.next()) {
-				System.out.println(rs.getString("score"));
-			}
+			st.executeUpdate(query);
 		} catch (SQLException e) {
 			e.printStackTrace();
+		}	
+	}
+	public boolean existInBdd(String joueur) {
+		try {
+			st = cn.createStatement();
+			String query = "SELECT * FROM score WHERE joueur= '" + joueur +"'";
+			ResultSet rs;
+			rs = st.executeQuery(query);
+			return rs.next();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public void saveToBDD(String joueur, int score) {
+		if(existInBdd(joueur)) {
+			updateInBDD(joueur, score);
+		}else {
+			insertIntoBDD(joueur, score);
 		}
 	}
 
