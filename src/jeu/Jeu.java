@@ -142,6 +142,8 @@ public class Jeu {
     private void defuse(String str) {
     	if(zoneCourante == zones[0]) {
     		if(Integer.parseInt(str) == bombe.getCode()) {
+    			Database dbb = new Database();
+    			dbb.saveToBDD(joueur.getNom(), bombe.scoreBombe());
     			GUI.win();
     		}else {
     			GUI.gameOver();
