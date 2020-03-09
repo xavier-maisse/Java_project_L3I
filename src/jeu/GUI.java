@@ -49,7 +49,7 @@ public class GUI implements ActionListener
     public static void creerGUIGame(boolean win) {
     	SimpleSwingBrowser browser = new SimpleSwingBrowser();
         browser.setVisible(true);
-        browser.loadURL("http://ivax.alwaysdata.net/miage/?win="+win);
+        browser.loadURL("https://projetmiagel3i.000webhostapp.com/");
     	
     }
    

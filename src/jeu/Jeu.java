@@ -1,4 +1,7 @@
 package jeu;
+
+import java.util.ArrayList;
+
 public class Jeu {
 	
     private GUI gui; 
@@ -6,15 +9,14 @@ public class Jeu {
 	protected Bombe bombe;
 	protected Joueur joueur;
 	private Zone [] zones;
-    protected static Commandes config;
+	private ArrayList<Zone>  zonePrecedente = new ArrayList<Zone>();
+
     
     public Jeu(Joueur joueur) {
         creerCarte();
         gui = null;
         bombe = new Bombe(5,0);
         this.joueur = joueur;
-        config = new Commandes("config.txt");
-        System.out.println(config.getMapConfig("NORD"));
     }
 
     public void setGUI( GUI g) { gui = g; afficherMessageDeBienvenue(); }
@@ -23,7 +25,7 @@ public class Jeu {
     	Malfaiteur malfaiteur1 = new Malfaiteur("Xavier",
     			new Enigme("Quand j’avais 6 ans, ma sœur avait la moitié de mon âge. Aujourd’hui j’ai 50 ans, quel âge a ma sœur ? ", "47"));
         Malfaiteur malfaiteur2 = new Malfaiteur("Abd",new Enigme("Quel est le plus grand chiffre du monde ?","9"));
-        Malfaiteur malfaiteur3 = new Malfaiteur("Thai",new Enigme("Verticalement : les deuxièmes lettres de chaque mot se suivent avec 2 rangs d’écart. "
+        Malfaiteur malfaiteur3 = new Malfaiteur("Tai",new Enigme("Verticalement : les deuxièmes lettres de chaque mot se suivent avec 2 rangs d’écart. "
         		+ " \n Horizontalement : les premières lettres de chaque mot se suivent avec 3 rangs d’écart. "
         		+ "\n Donner la suite des 3 lettres.","PNI"));
         
@@ -114,6 +116,11 @@ public class Jeu {
         case "NOM":
         	getNomJoueur();
         	break;
+        case "R" : case "RETOUR":
+        	retour();
+        	break;
+        case "SOLUTION":
+        	solution();
        	default : 
             gui.afficher("Commande inconnue");
             break;
@@ -142,8 +149,6 @@ public class Jeu {
     private void defuse(String str) {
     	if(zoneCourante == zones[0]) {
     		if(Integer.parseInt(str) == bombe.getCode()) {
-    			Database dbb = new Database();
-    			dbb.saveToBDD(joueur.getNom(), bombe.scoreBombe());
     			GUI.win();
     		}else {
     			GUI.gameOver();
@@ -204,15 +209,64 @@ public class Jeu {
     		gui.afficher();
     	}
         else {
+        	
+            zonePrecedente.add(zoneCourante);
         	zoneCourante = nouvelle;
         	gui.afficher(zoneCourante.descriptionLongue());
         	gui.afficher();
         	gui.afficheImage(zoneCourante.nomImage());
+        	raconteEnigme();
         }
     }
     
     private void terminer() {
     	gui.afficher( "Au revoir...");
     	gui.enable( false);
+    }
+    
+    private void retour() {
+    	if(!zonePrecedente.isEmpty()) {
+	    	gui.afficher(zonePrecedente.get(zonePrecedente.size()-1).descriptionLongue());
+	    	gui.afficher();
+	    	gui.afficheImage(zonePrecedente.get(zonePrecedente.size()-1).nomImage());
+	    	zonePrecedente.remove(zonePrecedente.size()-1);
+    	}
+    	else {
+    		gui.afficher("Plus de retour en arriere possible !!!");
+    	}
+    	
+    }
+    
+    private void solution() {
+    	//Debut de la solution
+    	gui.afficher( "Debut de la solution");
+    	
+    	//Resolution premiere Egnime au nord
+    	gui.afficher("Direction nord");
+    	allerEn( "NORD"); 	
+    	raconteEnigme();
+
+    	reponse("47");
+    	
+    	//Resolution deuxieme egnime a l'ouest
+    	gui.afficher("Direction ouest");
+    	allerEn("SUD");
+    	allerEn("OUEST");
+    	raconteEnigme();
+    	reponse("PNI");
+    	
+    	//Resolution troisieme egnime a l'est
+    	gui.afficher("Direction est");
+    	allerEn("EST");
+    	allerEn("EST");
+    	raconteEnigme();
+    	reponse("9");
+    	
+    	//Retour au menu principal + gonflement de ballon
+    	allerEn("OUEST");
+    	gui.afficher("Gonflement ballon");
+    	gonfler();
+    	gui.afficher("desamorcage");
+    	defuse("196"); 	
     }
 }

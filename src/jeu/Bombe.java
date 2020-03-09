@@ -62,7 +62,4 @@ public class Bombe {
 		return Bombe.code;
 	}
 	
-	public int scoreBombe() {
-		return initMinute == 0 ? initSecond : (initMinute*100)+initSecond;
-	}
 }
