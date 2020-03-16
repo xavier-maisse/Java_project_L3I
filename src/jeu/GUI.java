@@ -23,35 +23,48 @@ public class GUI implements ActionListener
         creerGUI();
     }
 
-    public void afficher(String s) {
+    public boolean afficher(String s) {
         texte.append(s);
         texte.setCaretPosition(texte.getDocument().getLength());
+        return true;
     }
     
-    public void afficher() {
+    public boolean afficher() {
         afficher("\n");
+        return true;
     }
 
-   public void afficheImage( String nomImage) {
-	   	URL imageURL = this.getClass().getClassLoader().getResource("jeu/images/" + nomImage);
-	   	if( imageURL != null ) {
-        	image.setIcon( new ImageIcon( imageURL ));
+   public boolean afficheImage( String nomImage) {
+        URL imageURL = this.getClass().getClassLoader().getResource("jeu/images/" + nomImage);
+        if( imageURL != null ) {
+            image.setIcon( new ImageIcon( imageURL ));
             fenetre.pack();
+            return true;
+        }
+        else
+        {
+            return false;
         }
    }
 
-    public void enable(boolean ok) {
+    public boolean enable(boolean ok) {
         entree.setEditable(ok);
-        if ( ! ok )
+        if ( ! ok ) {
             entree.getCaret().setBlinkRate(0);
+            return false;
+        }
+        else
+        {
+            return true;
+        }
     }
 
     public static void creerGUIGame(boolean win) {
-    	SimpleSwingBrowser browser = new SimpleSwingBrowser();
-        browser.setVisible(true);
-        browser.loadURL("http://ivax.alwaysdata.net/miage/?win="+win);
-    	
-    }
+      SimpleSwingBrowser browser = new SimpleSwingBrowser();
+      browser.setVisible(true);
+      browser.loadURL("http://ivax.alwaysdata.net/miage/?win="+win);
+      
+  }
    
     
     private void creerGUI() {
@@ -85,27 +98,27 @@ public class GUI implements ActionListener
     }
 
     public static void changeTitle(String str) {
-    	fenetre.setTitle(str);
+        fenetre.setTitle(str);
     }
     
     /**
      * Fermeture de la fenetre si gameOver et
      * affichage d'une fenetre GameOver
+     * @return 
      */
-    public static void gameOver() {
-    	fenetre.setVisible(false);
-    	GUI.creerGUIGame(false);
-    	//Si on veut couper l'application
-    	//fenetre.dispatchEvent(new WindowEvent(fenetre,WindowEvent.WINDOW_CLOSING));
-  
+    public static boolean gameOver() {
+        fenetre.setVisible(false);
+        GUI.creerGUIGame(false);
+        //Si on veut couper l'application
+        //fenetre.dispatchEvent(new WindowEvent(fenetre,WindowEvent.WINDOW_CLOSING));
+        return true;
     }
     
     public static void win() {
-    	fenetre.setVisible(false);
-    	GUI.creerGUIGame(true);
-    	//Si on veut couper l'application
-    	//fenetre.dispatchEvent(new WindowEvent(fenetre,WindowEvent.WINDOW_CLOSING));
-  
+        fenetre.setVisible(false);
+        GUI.creerGUIGame(true);
+        //Si on veut couper l'application
+        //fenetre.dispatchEvent(new WindowEvent(fenetre,WindowEvent.WINDOW_CLOSING));
     }
     
     public void actionPerformed(ActionEvent e) {

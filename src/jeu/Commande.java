@@ -18,8 +18,8 @@ public enum Commande {
     CREDIT("CREDIT", "CREDIT (Nombre de pièces)"),
     REPONSE("REPONSE", "REPONSE + la réponse (Permet de réponde à l'énigme)"),
     DEFUSE("DEFUSE", "DEFUSE + le code (Permet de désamorcer la bombe)"),
-    GONFLER("GONFLER", "GONFLER  (Permet d'activer la machine à ballon)");
-    
+    GONFLER("GONFLER", "GONFLER  (Permet d'activer la machine à ballon)"),
+    RETOUR("R", "R(RETOUR)");
 
 	/**
 	 * Abrevation de la commande
