@@ -13,8 +13,14 @@ public enum Commande {
 	EST("E", "E (aller Ã  la sortie est)"), 
 	OUEST("O", "O (aller Ã  la sortie ouest)"), 
 	AIDE("?", "? (aide)"), 
-	QUITTER("Q", "Q (quitter)"),
-	RETOUR("R", "R(retour)");
+	QUITTER("P", "P (quitter)"),
+    DEMANDER("DEMANDER", "DEMANDER (Demande l'enigme de la salle)"),
+    CREDIT("CREDIT", "CREDIT (Nombre de pièces)"),
+    REPONSE("REPONSE", "REPONSE + la réponse (Permet de réponde à l'énigme)"),
+    DEFUSE("DEFUSE", "DEFUSE + le code (Permet de désamorcer la bombe)"),
+    GONFLER("GONFLER", "GONFLER  (Permet d'activer la machine à ballon)"),
+    RETOUR("R", "R(RETOUR)"),
+	SOLUTION("T", "T (Fini le jeu)");
 
 	/**
 	 * Abrevation de la commande
