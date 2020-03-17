@@ -29,7 +29,7 @@ public class Jeu {
         Malfaiteur malfaiteur1 = new Malfaiteur("Xavier",
                 new Enigme("Quand j’avais 6 ans, ma sœur avait la moitié de mon âge. Aujourd’hui j’ai 50 ans, quel âge a ma sœur ? ", "47"));
         Malfaiteur malfaiteur2 = new Malfaiteur("Abd",new Enigme("Quel est le plus grand chiffre du monde ?","9"));
-        Malfaiteur malfaiteur3 = new Malfaiteur("Thai",new Enigme("Verticalement : les deuxièmes lettres de chaque mot se suivent avec 2 rangs d’écart. "
+        Malfaiteur malfaiteur3 = new Malfaiteur("Tai",new Enigme("Verticalement : les deuxièmes lettres de chaque mot se suivent avec 2 rangs d’écart. "
                 + " \n Horizontalement : les premières lettres de chaque mot se suivent avec 3 rangs d’écart. "
                 + "\n Donner la suite des 3 lettres.","pni"));
         
@@ -123,6 +123,7 @@ public class Jeu {
         case "R" : case "RETOUR":
             retour();
             return "RETOUR";
+            break;
         default : 
             gui.afficher("Commande inconnue");
             return "DEFAUT";
@@ -222,16 +223,16 @@ public class Jeu {
     }
     
     private void retour() {
-        if(!zonePrecedente.isEmpty()) {
-            gui.afficher(zonePrecedente.get(zonePrecedente.size()-1).descriptionLongue());
-            gui.afficher();
-            gui.afficheImage(zonePrecedente.get(zonePrecedente.size()-1).nomImage());
-            zonePrecedente.remove(zonePrecedente.size()-1);
-        }
-        else {
-            gui.afficher("Plus de retour en arriere possible !!!");
-        }
-        
+    	if(!zonePrecedente.isEmpty()) {
+	    	gui.afficher(zonePrecedente.get(zonePrecedente.size()-1).descriptionLongue());
+	    	gui.afficher();
+	    	gui.afficheImage(zonePrecedente.get(zonePrecedente.size()-1).nomImage());
+	    	zonePrecedente.remove(zonePrecedente.size()-1);
+    	}
+    	else {
+    		gui.afficher("Plus de retour en arriere possible !!!");
+    	}
+    	
     }
     private void terminer() {
         gui.afficher( "Au revoir...");
