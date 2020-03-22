@@ -8,10 +8,10 @@ import java.util.List;
  *
  */
 public enum Commande {
-	NORD("N", "N (aller Ã  la sortie nord)"), 
-	SUD("S", "S (aller Ã  la sortie sud)"), 
-	EST("E", "E (aller Ã  la sortie est)"), 
-	OUEST("O", "O (aller Ã  la sortie ouest)"), 
+	NORD("N", "N (aller a la sortie nord)"), 
+	SUD("S", "S (aller a la sortie sud)"), 
+	EST("E", "E (aller a la sortie est)"), 
+	OUEST("O", "O (aller a la sortie ouest)"), 
 	AIDE("?", "? (aide)"), 
 	QUITTER("P", "P (quitter)"),
     DEMANDER("DEMANDER", "DEMANDER (Demande l'enigme de la salle)"),
@@ -19,7 +19,8 @@ public enum Commande {
     REPONSE("REPONSE", "REPONSE + la réponse (Permet de réponde à l'énigme)"),
     DEFUSE("DEFUSE", "DEFUSE + le code (Permet de désamorcer la bombe)"),
     GONFLER("GONFLER", "GONFLER  (Permet d'activer la machine à ballon)"),
-    RETOUR("R", "R(RETOUR)");
+    RETOUR("R", "R(RETOUR)"),
+    SOLUTION("T", "T (Fini le jeu)");
 
 	/**
 	 * Abrevation de la commande

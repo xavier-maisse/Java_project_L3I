@@ -1,5 +1,9 @@
 package jeu;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Jeu {
@@ -117,9 +121,8 @@ public class Jeu {
         case "GONFLER":
             gonfler();
             return "GONFLER";
-        case "NOM":
-            getNomJoueur();
-            return "NOM";
+        case "T":
+            solution();
         case "R" : case "RETOUR":
             retour();
             return "RETOUR";
@@ -237,4 +240,20 @@ public class Jeu {
         gui.afficher( "Au revoir...");
         gui.enable( false);
     }
+    
+    private void solution() {
+      try{
+      InputStream flux=new FileInputStream("Solution.txt"); 
+      InputStreamReader lecture=new InputStreamReader(flux);
+      BufferedReader buff=new BufferedReader(lecture);
+      String ligne;
+      while ((ligne=buff.readLine())!=null){
+          traiterCommande(ligne);
+      }
+      buff.close(); 
+      }       
+      catch (Exception e){
+      System.out.println(e.toString());
+      }
+  }
 }
