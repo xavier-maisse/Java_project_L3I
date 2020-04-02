@@ -6,6 +6,11 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
+/**
+ * 
+ * @author xavier, Thai
+ *
+ */
 public class Jeu {
     
     private GUI gui; 
@@ -16,6 +21,10 @@ public class Jeu {
     private ArrayList<Zone>  zonePrecedente = new ArrayList<Zone>();
 
     
+    /**
+     * Créer la carte, instancie le gui, la bombe et le joueur.
+     * @param joueur
+     */
     public Jeu(Joueur joueur) {
         creerCarte();
         gui = null;
@@ -23,12 +32,22 @@ public class Jeu {
         this.joueur = joueur;
     }
 
+    /**
+     * Setter gui + message de bienvenue.
+     * @param g
+     * @return
+     */
     public boolean setGUI( GUI g) { 
         gui = g;
         afficherMessageDeBienvenue(); 
         return true;
         }
     
+    /**
+     * Création de la carte.
+     * Comprend les malfaiteurs avec leurs énigmes,
+     * ainsi que les zones et leurs sorties.
+     */
     private void creerCarte() {
         Malfaiteur malfaiteur1 = new Malfaiteur("Xavier",
                 new Enigme("Quand j’avais 6 ans, ma sœur avait la moitié de mon âge. Aujourd’hui j’ai 50 ans, quel âge a ma sœur ? ", "47"));
@@ -68,11 +87,18 @@ public class Jeu {
     
 
 
+    /**
+     * Affiche la localisation de la zone courante.
+     */
     private void afficherLocalisation() {
             gui.afficher( zoneCourante.descriptionLongue());
             gui.afficher();
     }
 
+    /**
+     * Affiche au joueur le message de bienvenue.
+     * Fonction appelé lors de l'instanciation du GUI.
+     */
     private void afficherMessageDeBienvenue() {
         gui.afficher("Bienvenue !");
         gui.afficher();
@@ -82,6 +108,11 @@ public class Jeu {
         gui.afficheImage(zoneCourante.nomImage());
     }
     
+    /**
+     * Permet de traiter les commandes par rapport aux entrées utilisateurs.
+     * @param commandeLue
+     * @return l'excutions de la fonction associé à la commande lue.
+     */
     public String traiterCommande(String commandeLue) {
         gui.afficher( "> "+ commandeLue + "\n");
         String[] result = commandeLue.split(" ");       
@@ -132,9 +163,18 @@ public class Jeu {
         }
     }
 
+    /**
+     * Renvoi le nom du joueur courant.
+     */
     private void getNomJoueur() {
         gui.afficher(joueur.getNom());
     }
+    
+    /**
+     * Permet d'activer la machine à gonfler les ballons.
+     * Possible seulement dans la zone principale et si le joueur
+     * possède 3 pièces.
+     */
     private void gonfler() {
         if(zoneCourante == zones[0]) {
             if(joueur.getNbrDePieces() < 3) {
@@ -151,6 +191,14 @@ public class Jeu {
         }
         
     }
+    
+    /**
+     * Permet de désamorcer la bombe.
+     * Si le code fournit par le joueur est correct, on ajoute son score 
+     * dans la BDD, et on lance la WebView de la victoire.
+     * Sinon pas d'insertion en BDD et Webview de la defaite.
+     * @param str, le code pour désamorcer la bombe.
+     */
     private void defuse(String str) {
         if(zoneCourante == zones[0]) {
             if(Integer.parseInt(str) == bombe.getCode()) {
@@ -165,6 +213,15 @@ public class Jeu {
         }
     }
     
+    /**
+     * Permet de repondre à une énigme.
+     * Pour cela la zone doit contenir un malfaiteur, et
+     * il est impossible de répondre à une énigme déjà résolu.
+     * Si le joueur répond une mauvaise réponse, il est alors 
+     * téléporté dans la zone principale afin de lui faire perdre
+     * du temps.
+     * @param str la reponse à l'énigme.
+     */
     private void reponse(String str) {
         if(zoneCourante.getMalfaiteur() != null) {
             if(zoneCourante.getMalfaiteur().getEnigme().getReponse().equals(str)) {
@@ -184,10 +241,19 @@ public class Jeu {
         }else gui.afficher("Pas d'enigme ici");
     }
     
+    /**
+     * Permet de savoir combien le joueur possède
+     * de crédit/pièces.
+     */
     private void credit() {
         gui.afficher("Nombre de pièces : " +joueur.getNbrDePieces());
     }
     
+    /**
+     * Permet d'afficher l'énigme de la salle courante.
+     * Possible si la salle contient un malfaiteur et que l'énigme
+     * n'a pas déjà été faite.
+     */
     private void raconteEnigme() {
         if(zoneCourante.getMalfaiteur() != null) {
             if(zoneCourante.getMalfaiteur().getEnigme().getIsDone()) {
@@ -200,6 +266,9 @@ public class Jeu {
         }
     }
     
+    /**
+     * Permet d'afficher toutes les commandes.
+     */
     private void afficherAide() {
         gui.afficher("Etes-vous perdu ?");
         gui.afficher();
@@ -209,6 +278,10 @@ public class Jeu {
         gui.afficher();
     }
 
+    /**
+     * Permet de changer de salle courante.
+     * @param direction où l'utilisateur souhaite aller.
+     */
     private void allerEn(String direction) {
         Zone nouvelle = zoneCourante.obtientSortie( direction);
         if ( nouvelle == null ) {
@@ -224,6 +297,9 @@ public class Jeu {
         }
     }
     
+    /**
+     * Permet de revenir dans la salle précédente.
+     */
     private void retour() {
         if(!zonePrecedente.isEmpty()) {
             gui.afficher(zonePrecedente.get(zonePrecedente.size()-1).descriptionLongue());
@@ -236,11 +312,22 @@ public class Jeu {
         }
         
     }
+    
+    /**
+     * Quitter le jeu.
+     * Affiche message d'au revoir.
+     */
     private void terminer() {
         gui.afficher( "Au revoir...");
         gui.enable( false);
     }
     
+    /**
+     * Parcours du fichier solution et execution
+     * des commandes.
+     * Commande à lancer des le debut du jeu après la saisie
+     * du pseudo.
+     */
     private void solution() {
       try{
       InputStream flux=new FileInputStream("Solution.txt"); 

@@ -52,7 +52,7 @@ public enum Commande {
 	
 	/**
 	 * Retourne une list des toutes les descriptions des commandes
-	 * @return
+	 * @return list des descriptions.
 	 */
 	public static List<String> toutesLesDescriptions() { 
 		ArrayList<String> resultat = new ArrayList<String>();
@@ -63,8 +63,8 @@ public enum Commande {
 	}
 	
 	/**
-	 * Retourne une liste de toutes les abrevations des commandes
-	 * @return
+	 * Retourne une liste de toutes les abrevations des commandes.
+	 * @return list des abrevations.
 	 */
 	public static List<String> toutesLesAbreviations() { 
 		ArrayList<String> resultat = new ArrayList<String>();
@@ -74,6 +74,10 @@ public enum Commande {
 		return resultat;
 	}
 	
+	/**
+	 * Retourne les noms des commandes.
+	 * @return list des noms des commandes.
+	 */
 	public static List<String> tousLesNoms() { 
 		ArrayList<String> resultat = new ArrayList<String>();
 		for(Commande c : values()) {

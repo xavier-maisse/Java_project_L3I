@@ -5,6 +5,11 @@ import java.awt.Image;
 
 import javax.swing.JComponent;
 
+/**
+ * 
+ * @author xavier
+ *
+ */
 public class ImagePanel extends JComponent {
 	
     private Image image;

@@ -18,6 +18,15 @@ import java.net.URL;
  
 import static javafx.concurrent.Worker.State.FAILED;
   
+/**
+ * Classe SimpleSwingBrowser qui permet d'afficher en swing
+ * un Webview.
+ * Cette classe est utilisée pour afficher le GUI de la victoire et de la défaite.
+ * Le code de cette classe est disponible sur la doc de Java.
+ * 
+ * @author xavier / Java
+ *
+ */
 public class SimpleSwingBrowser extends JFrame {
  
     private final JFXPanel jfxPanel = new JFXPanel();

@@ -8,7 +8,11 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
+/**
+ * Classe DataBase.
+ * @author xavier
+ *
+ */
 public class Database {
 
 	private String url = "jdbc:mysql://mysql-ivax.alwaysdata.net/ivax_ptut";
@@ -17,7 +21,10 @@ public class Database {
 	private Connection cn;
 	private Statement st;
 	
-	
+	/**
+	 * Instancie une connexion à la base de donnée.
+	 * 
+	 */
 	public Database() {
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
@@ -30,6 +37,11 @@ public class Database {
 		
 	}
 	
+	/**
+	 * Insert dans la BDD le joueur et son score
+	 * @param joueur
+	 * @param score
+	 */
 	public void insertIntoBDD(String joueur, int score) {
 		try {
 			st = cn.createStatement();
@@ -41,6 +53,11 @@ public class Database {
 		}	
 	}
 	
+	/**
+	 * Met à jour le score d'un joueur et son score dans la BDD.
+	 * @param joueur
+	 * @param score
+	 */
 	public void updateInBDD(String joueur, int score) {
 		try {
 			st = cn.createStatement();
@@ -51,6 +68,12 @@ public class Database {
 			e.printStackTrace();
 		}	
 	}
+	
+	/**
+	 * Renvoi vrai si le joueur est deja présent dans la BDD.
+	 * @param joueur
+	 * @return boolean
+	 */
 	public boolean existInBdd(String joueur) {
 		try {
 			st = cn.createStatement();
@@ -64,6 +87,13 @@ public class Database {
 		return false;
 	}
 	
+	/**
+	 * Sauvegarde en BDD.
+	 * Si le joueur existe déjà dans la BDD, on met à jour son score.
+	 * Sinon on ajoute un nouveau tuple.
+	 * @param joueur
+	 * @param score
+	 */
 	public void saveToBDD(String joueur, int score) {
 		if(existInBdd(joueur)) {
 			updateInBDD(joueur, score);
